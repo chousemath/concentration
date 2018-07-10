@@ -14,7 +14,31 @@ class Concentration {
     var cards = [Card]();
     
     func chooseCard(at index: Int) {
-        
+        if !cards[index].isMatched {
+            cards[index].isFaceUp = !cards[index].isFaceUp
+            if cards[index].isFaceUp {
+                var upIndices = [Int]()
+                for idx in cards.indices {
+                    if cards[idx].isFaceUp {
+                        if idx != index {
+                            upIndices.append(idx)
+                            if cards[idx].id == cards[index].id {
+                                cards[idx].isFaceUp = false
+                                cards[idx].isMatched = true
+                                cards[index].isFaceUp = false
+                                cards[index].isMatched = true
+                                return
+                            }
+                        }
+                    }
+                }
+                if upIndices.count == 2 {
+                    for ind in upIndices {
+                        cards[ind].isFaceUp = false
+                    }
+                }
+            }
+        }
     }
     
     init(numberOfPairsOfCards: Int) {
