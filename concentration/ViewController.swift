@@ -9,7 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-    lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
+    var numberOfPairsOfCards: Int {
+        return (cardButtons.count + 1) / 2
+    }
+    lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     
     var flipCount = 0 {
         didSet {
@@ -17,9 +20,16 @@ class ViewController: UIViewController {
         }
     }
     
+    var matchCount = 0 {
+        didSet {
+            matchCountLabel.text = "Matches: \(matchCount)"
+        }
+    }
+    
     var emojis = ["😀", "🤣", "☺️", "😇", "😍", "😎", "🤩", "😫", "😢", "😡", "😱", "🤮"]
 
     @IBOutlet weak var flipCountLabel: UILabel!
+    @IBOutlet weak var matchCountLabel: UILabel!
     @IBOutlet var cardButtons: [UIButton]!
     
     @IBAction func touchCard(_ sender: UIButton) {
@@ -31,6 +41,7 @@ class ViewController: UIViewController {
     }
     
     func updateViewFromModel() {
+        matchCount = game.matches
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -38,7 +49,7 @@ class ViewController: UIViewController {
                 button.setTitle(emoji(for: card), for: UIControlState.normal)
                 button.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
             } else {
-                button.setTitle("", for: UIControlState.normal)
+                button.setTitle("?", for: UIControlState.normal)
                 button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : #colorLiteral(red: 1, green: 0.6993971377, blue: 0.2356643885, alpha: 1)
             }
         }
