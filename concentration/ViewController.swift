@@ -59,8 +59,7 @@ class ViewController: UIViewController {
     
     private func emoji(for card: Card) -> String {
         if emoji[card.id] == nil, emojis.count > 0 {
-            let rand = arc4random_uniform(UInt32(emojis.count))
-            emoji[card.id] = emojis.remove(at: Int(rand))
+            emoji[card.id] = emojis.remove(at: Int(emojis.count.random))
         }
         return emoji[card.id] ?? "?"
     }

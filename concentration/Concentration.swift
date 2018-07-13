@@ -15,6 +15,7 @@ class Concentration {
     private(set) var matches = 0
     
     func chooseCard(at index: Int) {
+        assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index)), index out of bounds")
         if !cards[index].isMatched {
             cards[index].isFaceUp = !cards[index].isFaceUp
             if cards[index].isFaceUp {
@@ -42,6 +43,7 @@ class Concentration {
     }
     
     init(numberOfPairsOfCards: Int) {
+        assert(numberOfPairsOfCards > 0, "Concentration.init(numberOfPairsOfCards: \(numberOfPairsOfCards)), must initialize a game with at least 1 pair of cards")
         for _ in 0..<numberOfPairsOfCards {
             let card = Card()
             // when you assign a struct to another variable
@@ -53,9 +55,21 @@ class Concentration {
         // shuffle the cards
         var last = cards.count - 1
         while (last > 0) {
-            let rand = Int(arc4random_uniform(UInt32(last)))
+            let rand = last.random
             cards.swapAt(last, rand)
             last -= 1
+        }
+    }
+}
+
+extension Int {
+    var random: Int {
+        if self > 0 {
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self < 0 {
+            return -Int(arc4random_uniform(UInt32(abs(self))))
+        } else {
+            return 0
         }
     }
 }
