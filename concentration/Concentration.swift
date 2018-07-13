@@ -11,8 +11,8 @@ import Foundation
 // classes get a free initializer so long as all their
 // variables are initialized
 class Concentration {
-    var cards = [Card]()
-    var matches = 0
+    private(set) var cards = [Card]()
+    private(set) var matches = 0
     
     func chooseCard(at index: Int) {
         if !cards[index].isMatched {
